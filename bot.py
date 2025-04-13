@@ -1,26 +1,16 @@
 import os
 import re
-
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 import instaloader
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    ContextTypes,
-    MessageHandler,
-    filters,
-)
 
 load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-
 loader = instaloader.Instaloader()
-
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Send me an Instagram Reel link!")
-
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
@@ -44,8 +34,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Please send a valid Instagram Reel link!")
 
-
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 app.add_handler(CommandHandler("start", start))
-app.add_handler(MessageHandler(filters.TEXT, handle_message))
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 app.run_polling()
