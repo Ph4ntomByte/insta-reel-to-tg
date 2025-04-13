@@ -24,7 +24,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
-    pattern = r"(https?://(www\.)?instagram\.com/(reel|reels)/[A-Za-z0-9_\-]+)"
+    pattern = r"(https?://(www\.)?instagram\.com/(reel|reels|p)/[A-Za-z0-9_\-]+)"
     match = re.search(pattern, url)
 
     if match:
